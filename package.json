@@ -1,0 +1,17 @@
+{
+  "name": "fortune-bot",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Ruan Klein",
+    "url": "https://ruanklein.github.io/"
+  },
+  "scripts": {
+    "start": "NODE_ENV=production node .",
+    "dev": "node ."
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "puppeteer": "^3.0.2"
+  }
+}
