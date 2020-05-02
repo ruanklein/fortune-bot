@@ -6,11 +6,11 @@ Generate message from Fortune CLI and post in twitter!
 
 ## Configure
 
-Copy `.env.example` to `.env` and type your twitter credentials (and your phone number) on `.env`:
+### For all environments
 
-```
-cp .env.example .env
-```
+Copy `.env.example` to `.env` and type your twitter credentials (and your phone number) on `.env`.
+
+### Local environment 
 
 Run yarn to install dependencies:
 
@@ -24,7 +24,17 @@ Also, install fortune from package manager. E.g on Debian:
 sudo apt install fortune
 ```
 
+### Docker environment
+
+Build image:
+
+```
+docker build . --no-cache -t bot/fortune
+```
+
 ## Start
+
+### Local environment
 
 Run:
 
@@ -38,15 +48,9 @@ For debugging/dev:
 yarn dev
 ```
 
-## Production with Docker
+### Docker environment
 
-Build image:
-```
-docker build . --no-cache -t bot/fortune
-```
-
-
-Run (**will post on twitter**):
+Run:
 
 ```
 docker run -it --rm --name tweet-fortune bot/fortune
