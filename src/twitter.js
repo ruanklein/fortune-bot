@@ -5,7 +5,8 @@ require('dotenv/config');
 const
     baseUrl  = 'https://twitter.com/',
     username = process.env.TWITTER_USERNAME,
-    password = process.env.TWITTER_PASSWORD;
+    password = process.env.TWITTER_PASSWORD,
+    phone    = process.env.TWITTER_PHONE;
 
 let
     browser = null,
@@ -47,7 +48,16 @@ module.exports = {
 		await page.keyboard.type(password);
 
         await page.click('[data-testid="LoginForm_Login_Button"]');
-		await page.waitFor(1000);
+
+        const challenge = await page.$('#challenge_response');
+        
+        if(challenge !== null) {
+            await page.click('#challenge_response');
+            await page.keyboard.type(phone);
+            await page.click('#email_challenge_submit');
+        }
+
+        await page.waitFor(1000);
     },
     post: async tweet => {
         let url = await page.url();
