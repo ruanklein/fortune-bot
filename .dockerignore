@@ -2,3 +2,6 @@ node_modules
 image
 .env.example
 Dockerfile
+.dockerignore
+.gitignore
+README.md
