@@ -19,7 +19,7 @@ const lauchBrowser = async () => {
     if(isEnvProd) {
         return await puppeteer.launch({
             headless: true,
-            slowMo: 120,
+            slowMo: 220,
             args: ['--no-sandbox']
         });
     }
@@ -82,8 +82,7 @@ module.exports = {
                 await page.waitFor(1000);
             }
         
-            await page.click('.DraftEditor-editorContainer');
-            
+            await page.click('[data-testid="tweetTextarea_0"]');
             await page.keyboard.type(tweet);
             
             await page.click('[data-testid="tweetButtonInline"]');
