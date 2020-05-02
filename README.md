@@ -8,11 +8,15 @@ Generate message from Fortune CLI and post in twitter!
 
 Copy `.env.example` to `.env` and type your twitter credentials on `.env`:
 
-```cp .env.example .env```
+```
+cp .env.example .env
+```
 
 Run yarn to install dependencies:
 
-```yarn install```
+```
+yarn install
+```
 
 ## Start
 
