@@ -11,7 +11,7 @@ RUN apt-get update \
     | tee /etc/apt/sources.list.d/google.list \
     && apt-get update \
     && apt-get -y install --no-install-recommends \
-        google-chrome-stable \
+        google-chrome-unstable \
         fonts-ipafont-gothic \
         fonts-wqy-zenhei \
         fonts-thai-tlwg \
