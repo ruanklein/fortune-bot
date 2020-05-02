@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "dotenv": "^8.2.0",
+    "moment": "^2.25.1",
     "puppeteer": "^3.0.2"
   }
 }
