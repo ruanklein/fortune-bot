@@ -48,6 +48,7 @@ module.exports = {
 		await page.keyboard.type(password);
 
         await page.click('[data-testid="LoginForm_Login_Button"]');
+        await page.waitFor(1000);
 
         const challenge = await page.$('#challenge_response');
         
@@ -55,9 +56,9 @@ module.exports = {
             await page.click('#challenge_response');
             await page.keyboard.type(phone);
             await page.click('#email_challenge_submit');
-        }
 
-        await page.waitFor(1000);
+            await page.waitFor(1000);
+        }
     },
     post: async tweet => {
         let url = await page.url();
