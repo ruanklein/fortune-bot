@@ -1,3 +1,4 @@
 node_modules
 image
 .env.example
+Dockerfile
