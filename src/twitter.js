@@ -1,19 +1,22 @@
 const puppeteer = require('puppeteer');
 
+const moment = require('moment');
+
 require('dotenv/config');
 
 const
-    baseUrl  = 'https://twitter.com/',
-    username = process.env.TWITTER_USERNAME,
-    password = process.env.TWITTER_PASSWORD,
-    phone    = process.env.TWITTER_PHONE;
+    baseUrl     = 'https://twitter.com/',
+    isEnvProd   = process.env.NODE_ENV === 'production',
+    username    = process.env.TWITTER_USERNAME,
+    password    = process.env.TWITTER_PASSWORD,
+    phone       = process.env.TWITTER_PHONE;
 
 let
     browser = null,
     page    = null;
 
 const lauchBrowser = async () => {
-    if(process.env.NODE_ENV === 'production') {
+    if(isEnvProd) {
         return await puppeteer.launch({
             headless: true,
             slowMo: 120,
@@ -39,40 +42,59 @@ module.exports = {
         await page.goto(baseUrl);
     },
     login: async () => {
-        await page.goto(`${baseUrl}/login`);
+        try {
+            await page.goto(`${baseUrl}/login`);
 
-        await page.click('input[name="session[username_or_email]"]');
-        await page.keyboard.type(username);
-        
-        await page.click('input[name="session[password]"]');
-		await page.keyboard.type(password);
+            await page.click('input[name="session[username_or_email]"]');
+            await page.keyboard.type(username);
+            
+            await page.click('input[name="session[password]"]');
+            await page.keyboard.type(password);
 
-        await page.click('[data-testid="LoginForm_Login_Button"]');
-        await page.waitFor(1000);
-
-        const challenge = await page.$('#challenge_response');
-        
-        if(challenge !== null) {
-            await page.click('#challenge_response');
-            await page.keyboard.type(phone);
-            await page.click('#email_challenge_submit');
-
+            await page.click('[data-testid="LoginForm_Login_Button"]');
             await page.waitFor(1000);
+
+            const challenge = await page.$('#challenge_response');
+        
+            if(challenge !== null) {
+                await page.click('#challenge_response');
+                await page.keyboard.type(phone);
+                await page.click('#email_challenge_submit');
+
+                await page.waitFor(1000);
+            }
+        } catch(e) {
+            if(isEnvProd) {
+                await page.screenshot({ 
+                    path: `image/screenshot_${moment().format('YYYY-MM-DD_HH-mm-ss')}.png` 
+                });
+            }
+            throw e;
         }
+        
     },
     post: async tweet => {
-        let url = await page.url();
+        try {
+            let url = await page.url();
 
-		if(url !== baseUrl){
-            await page.goto(baseUrl);
-            await page.waitFor(1000);
+            if(url !== baseUrl) {
+                await page.goto(baseUrl);
+                await page.waitFor(1000);
+            }
+        
+            await page.click('.DraftEditor-editorContainer');
+            
+            await page.keyboard.type(tweet);
+            
+            await page.click('[data-testid="tweetButtonInline"]');
+        } catch(e) {
+            if(isEnvProd) {
+                await page.screenshot({ 
+                    path: `image/screenshot_${moment().format('YYYY-MM-DD_HH-mm-ss')}.png` 
+                });
+            }
+            throw e;
         }
-        
-        await page.click('.DraftEditor-editorContainer');
-        
-        await page.keyboard.type(tweet);
-        
-        await page.click('[data-testid="tweetButtonInline"]');
     },
     end: async () => {
         await browser.close();
